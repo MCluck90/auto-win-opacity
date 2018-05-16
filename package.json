@@ -1,0 +1,15 @@
+{
+	"name": "auto-win-opacity",
+	"version": "1.0.0",
+	"description": "Automatically set the opacity of windows on a timer",
+	"main": "main.js",
+	"bin": {
+		"auto-win-opacity": "./main.js"
+	},
+	"dependencies": {
+		"ffi": "^2.2.0",
+		"open-in-editor": "^2.2.0",
+		"ref": "^1.3.4",
+		"win-opacity": "^1.0.1"
+	}
+}

@@ -1,0 +1,21 @@
+{
+	"pollInMilliseconds": 100,
+	"windows": [
+		{
+			"pattern": "- Notepad\\+\\+$",
+			"opacity": 230
+		},
+		{
+			"pattern": "^Slack -",
+			"opacity": 215
+		},
+		{
+			"pattern": "- Visual Studio Code$",
+			"opacity": 230
+		},
+		{
+			"pattern": "Spotify",
+			"opacity": 230
+		}
+	]
+}
