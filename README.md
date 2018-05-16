@@ -65,7 +65,7 @@ Each window configuration setting is made up of two properties: `pattern` and `o
   "windows": [
     {
       "pattern": "^GitHub - Mozilla Firefox$",
-      "opacity": "210"
+      "opacity": 210
     },
     {
       "pattern": "- Mozilla Firefox$",
