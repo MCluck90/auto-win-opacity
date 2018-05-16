@@ -11,7 +11,7 @@ const configPath = path.join(__dirname, 'config.json');
  * @param {string} source Original source
  * @param {object} obj The object to convert to JSON
  */
-function retainWhitespace(source, obj) {
+const retainWhitespace = (source, obj) => {
 	// Search for spaces in the file
 	const spacesInFile = /\n( +)/.exec(source);
 	let spaces = 2;
@@ -27,31 +27,7 @@ function retainWhitespace(source, obj) {
 		finalOutput = finalOutput.replace(new RegExp(' '.repeat(spaces), 'g'), '\t');
 	}
 	return finalOutput;
-}
-
-// Sometimes we want to send commands rather than start the system
-// This will let us know which one it is
-let beginPolling = true;
-
-// If the user is requesting that the process is killed
-if (process.argv.includes('kill')) {
-	// Add the kill flag to the config so that the running process knows it should die
-	const configSource = fs.readFileSync(configPath).toString();
-	const config = JSON.parse(configSource);
-	config.kill = true;
-
-	// Write it to the config file while retaining the same style of whitespace
-	fs.writeFileSync(configPath, retainWhitespace(configSource, config));
-	beginPolling = false;
-} else if (process.argv.includes('edit')) {
-	// If the user requests to edit the config
-	// open Visual Studio Code
-	const editor = openInEditor.configure({
-		editor: 'code'
-	});
-	editor.open(configPath);
-	beginPolling = false;
-}
+};
 
 /**
  * Applies the desired opacity levels to different windows
@@ -77,8 +53,10 @@ const applyOpacities = (config) => {
 	}
 };
 
-// Periodically update the opacity of windows
-function poll() {
+/**
+ * Periodically update the opacity of windows
+ */
+const poll = () => {
 	// Read the configuration in fresh in case the user updated it
 	const configSource = fs.readFileSync(configPath).toString();
 	const config = JSON.parse(configSource);
@@ -99,9 +77,24 @@ function poll() {
 	if (config.pollInMilliseconds > 0) {
 		setTimeout(poll, config.pollInMilliseconds);
 	}
-}
+};
 
-// Only start polling if other command line arguments weren't given
-if (beginPolling) {
+// If the user is requesting that the process is killed
+if (process.argv.includes('kill')) {
+	// Add the kill flag to the config so that the running process knows it should die
+	const configSource = fs.readFileSync(configPath).toString();
+	const config = JSON.parse(configSource);
+	config.kill = true;
+
+	// Write it to the config file while retaining the same style of whitespace
+	fs.writeFileSync(configPath, retainWhitespace(configSource, config));
+} else if (process.argv.includes('edit')) {
+	// If the user requests to edit the config
+	// open Visual Studio Code
+	const editor = openInEditor.configure({
+		editor: 'code'
+	});
+	editor.open(configPath);
+} else {
 	poll();
 }
