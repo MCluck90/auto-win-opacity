@@ -1,6 +1,11 @@
 {
 	"name": "auto-win-opacity",
-	"version": "1.0.0",
+	"version": "1.0.1",
+	"keywords": [
+		"windows",
+		"opacity",
+		"transparency"
+	],
 	"description": "Automatically set the opacity of windows on a timer",
 	"main": "main.js",
 	"bin": {
