@@ -4,11 +4,11 @@ I got really envious of *nix systems and their transparency options. So I decide
 
 This provides a tool for automatically setting the opacity of different windows. Here's a screenshot of me editing this with opacity applied to Visual Studio Code.
 
-![Visual Studio Code transparency](.github/screenshot.png)
+![Visual Studio Code transparency](https://raw.githubusercontent.com/MCluck90/auto-win-opacity/master/.github/screenshot.png)
 
 And another with Spotify.
 
-![Spotify transparency](.github/spotify.png)
+![Spotify transparency](https://raw.githubusercontent.com/MCluck90/auto-win-opacity/master/.github/spotify.png)
 
 ## Tested On
 
