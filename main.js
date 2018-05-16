@@ -6,6 +6,11 @@ const openInEditor = require('open-in-editor');
 const winOpacity = require('win-opacity');
 const configPath = path.join(__dirname, 'config.json');
 
+// Copy the example config if a user config does not exist
+if (!fs.existsSync(configPath)) {
+	fs.copyFileSync(path.join(__dirname, 'config.example.json', configPath));
+}
+
 /**
  * Converts an object to JSON while attempting to retain the original whitespace format
  * @param {string} source Original source
