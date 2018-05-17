@@ -8,7 +8,7 @@ const configPath = path.join(__dirname, 'config.json');
 
 // Copy the example config if a user config does not exist
 if (!fs.existsSync(configPath)) {
-	fs.copyFileSync(path.join(__dirname, 'config.example.json', configPath));
+	fs.copyFileSync(path.join(__dirname, 'config.example.json'), configPath);
 }
 
 /**
