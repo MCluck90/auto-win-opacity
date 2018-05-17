@@ -36,11 +36,11 @@ const retainWhitespace = (source, obj) => {
 
 /**
  * Applies the desired opacity levels to different windows
- * @param {object[]} config The different opacity settings
+ * @param {object[]} winConfig The different opacity settings
  */
-const applyOpacities = (config) => {
+const applyOpacities = (winConfig) => {
 	// Parse the patterns into regular expressions
-	const patterns = config.map(({ pattern, opacity }) => ({
+	const patterns = winConfig.map(({ pattern, opacity }) => ({
 		pattern: new RegExp(pattern),
 		opacity
 	}));
