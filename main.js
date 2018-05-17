@@ -62,25 +62,30 @@ const applyOpacities = (winConfig) => {
  * Periodically update the opacity of windows
  */
 const poll = () => {
-	// Read the configuration in fresh in case the user updated it
-	const configSource = fs.readFileSync(configPath).toString();
-	const config = JSON.parse(configSource);
+	try {
+		// Read the configuration in fresh in case the user updated it
+		const configSource = fs.readFileSync(configPath).toString();
+		const config = JSON.parse(configSource);
 
-	// If the config contains a `kill` key, end the process
-	if (config.kill) {
-		// Remove the kill flag to avoid constantly killing it every time it starts
-		delete config.kill;
-		fs.writeFileSync(configPath, retainWhitespace(configSource, config));
-		return;
-	}
+		// If the config contains a `kill` key, end the process
+		if (config.kill) {
+			// Remove the kill flag to avoid constantly killing it every time it starts
+			delete config.kill;
+			fs.writeFileSync(configPath, retainWhitespace(configSource, config));
+			return;
+		}
 
-	// Set the opacity of any configured windows
-	applyOpacities(config.windows);
+		// Set the opacity of any configured windows
+		applyOpacities(config.windows);
 
-	// If the user has specified a polling interval,
-	// wait that long before applying it again
-	if (config.pollInMilliseconds > 0) {
-		setTimeout(poll, config.pollInMilliseconds);
+		// If the user has specified a polling interval,
+		// wait that long before applying it again
+		if (config.pollInMilliseconds > 0) {
+			setTimeout(poll, config.pollInMilliseconds);
+		}
+	} catch(e) {
+		console.log(e);
+		fs.appendFileSync(path.join(__dirname, 'error.log'), e);
 	}
 };
 
@@ -93,6 +98,7 @@ if (process.argv.includes('kill')) {
 
 	// Write it to the config file while retaining the same style of whitespace
 	fs.writeFileSync(configPath, retainWhitespace(configSource, config));
+	console.log('requesting kill');
 } else if (process.argv.includes('edit')) {
 	// If the user requests to edit the config
 	// open Visual Studio Code
@@ -100,6 +106,7 @@ if (process.argv.includes('kill')) {
 		editor: 'code'
 	});
 	editor.open(configPath);
+	console.log('requesting edit');
 } else {
 	poll();
 }
