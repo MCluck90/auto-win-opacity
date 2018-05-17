@@ -1,18 +1,28 @@
 {
 	"name": "auto-win-opacity",
 	"version": "1.0.2",
+	"description": "Automatically set the opacity of windows on a timer",
+	"main": "main.js",
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/MCluck90/auto-win-opacity.git"
+	},
+	"bugs": {
+		"url": "https://github.com/MCluck90/auto-win-opacity/issues"
+	},
+	"preferGlobal": true,
 	"keywords": [
 		"windows",
 		"opacity",
 		"transparency"
 	],
-	"repository": "https://github.com/MCluck90/auto-win-opacity",
-	"license": "MIT",
-	"description": "Automatically set the opacity of windows on a timer",
-	"main": "main.js",
+	"scripts": {
+		"start": "node ./main.js"
+	},
 	"bin": {
 		"auto-win-opacity": "./main.js"
 	},
+	"license": "MIT",
 	"dependencies": {
 		"ffi": "^2.2.0",
 		"open-in-editor": "^2.2.0",
