@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const openInEditor = require('open-in-editor');
 const winOpacity = require('win-opacity');
+const argv = require('minimist')(process.argv.slice(2));
 const configPath = path.join(__dirname, 'config.json');
 
 // Copy the example config if a user config does not exist
@@ -85,7 +86,7 @@ const poll = () => {
 };
 
 // If the user is requesting that the process is killed
-if (process.argv.includes('kill')) {
+if (argv._.includes('kill')) {
 	// Add the kill flag to the config so that the running process knows it should die
 	const configSource = fs.readFileSync(configPath).toString();
 	const config = JSON.parse(configSource);
@@ -93,13 +94,24 @@ if (process.argv.includes('kill')) {
 
 	// Write it to the config file while retaining the same style of whitespace
 	fs.writeFileSync(configPath, retainWhitespace(configSource, config));
-} else if (process.argv.includes('edit')) {
-	// If the user requests to edit the config
-	// open Visual Studio Code
+} else if (argv._.includes('edit')) {
+	// Attempt to open the config file in the users editor choice
+	// Find out which editor to open the config file in
+	let editorType = argv.e || argv.editor || 'code';
 	const editor = openInEditor.configure({
-		editor: 'code'
+		editor: editorType
 	});
-	editor.open(configPath);
+	try {
+		editor.open(configPath)
+			.then(() => {}, (err) => {
+				// There's some weird phrasing in the open-in-editor module
+				// Try to fix that
+				err = err.replace('does not implemented', 'is not implemented');
+				console.error(err);
+			});
+	} catch (e) {
+		console.error(`Unknown editor type: ${editorType}`);
+	}
 } else {
 	poll();
 }
