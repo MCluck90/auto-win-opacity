@@ -58,6 +58,8 @@ const applyOpacities = (winConfig) => {
 	}
 };
 
+let forceOpenLoop = null;
+
 /**
  * Periodically update the opacity of windows
  */
@@ -72,6 +74,7 @@ const poll = () => {
 			// Remove the kill flag to avoid constantly killing it every time it starts
 			delete config.kill;
 			fs.writeFileSync(configPath, retainWhitespace(configSource, config));
+			clearTimeout(forceOpenLoop);
 			return;
 		}
 
@@ -82,6 +85,8 @@ const poll = () => {
 		// wait that long before applying it again
 		if (config.pollInMilliseconds > 0) {
 			setTimeout(poll, config.pollInMilliseconds);
+		} else {
+			clearTimeout(forceOpenLoop);
 		}
 	} catch(e) {
 		console.log(e);
@@ -108,5 +113,10 @@ if (process.argv.includes('kill')) {
 	editor.open(configPath);
 	console.log('requesting edit');
 } else {
+	// Force the process to stay open until otherwise noted
+	forceOpenLoop = setTimeout(function wait() {
+		forceOpenLoop = setTimeout(wait, 1000);
+	});
+
 	poll();
 }
